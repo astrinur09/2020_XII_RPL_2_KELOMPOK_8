@@ -15,10 +15,13 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
-    return view('admin.master');
+    return view('admin.login');
 });
 
+
+
 Auth::routes();
+
 
 Route::get('/account/{userId}/{userVerificationToken}/activate', 'Auth\AccountController@verifyToken');
 Route::get('/account/waiting-verification', 'Auth\AccountController@waitingVerification');
@@ -37,5 +40,9 @@ Route::get('/register-staff', 'Auth\RegisterController@registerStaff');
 
 //Route Untuk Admin, Student, Teacher, Staff TU, jika register dan login maka akan ke halaman ini 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/dashboard', 'User\UserController@index')->name('dashboard.users');
+    Route::get('admin/dashboard', 'AdminController@index')->name('dashboard.users');
+    Route::get('admin/table', 'AdminController@table');
+    Route::get('admin/table3', 'AdminController@table3');
+    Route::get('admin/Voting', 'AdminController@Voting');
+    Route::get('admin/profil', 'AdminController@profil');
 });
