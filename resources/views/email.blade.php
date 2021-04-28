@@ -1,4 +1,4 @@
-<center>
+	<center>
     <h1><b>Halo {{ $user->usr_name }}</b></h1> <br>
     <strong> SELAMAT DATANG DI WEB SMK MAHAPUTRA CERDAS UTAMA </strong> <br>
 

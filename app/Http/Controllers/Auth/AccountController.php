@@ -25,7 +25,7 @@ class AccountController extends Controller
             $user->usr_email_verified_at = now();
             $user->save();
 
-            return redirect('/dashboard')->with(['success' => 'Selamat akun anda berhasil diverifikasi']);;
+            return redirect('/')->with(['success' => 'Selamat akun anda berhasil diverifikasi']);;
         }
     }
 
@@ -42,7 +42,9 @@ class AccountController extends Controller
     public function resendVerification()
     {
 
+
         $user = Auth::user();
+        //dd($user['usr_email']);
         Mail::to($user['usr_email'])->send(new SendMail($user));
         return redirect()->back()->with(['success' => 'Email verifikasi berhasil dikirim ulang']);
     }

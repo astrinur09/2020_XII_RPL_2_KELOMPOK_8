@@ -1,5 +1,5 @@
 
-@extends('admin.master')
+@extends('student.master')
 @section ('content')
 
 @foreach($candidates as $data)

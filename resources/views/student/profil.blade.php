@@ -1,5 +1,5 @@
 
-@extends('admin.master')
+@extends('student.master')
 @section ('content')
 
 <div class="card card-primary card-outline">
@@ -17,7 +17,7 @@
                   </li>
                </ul>
 
-                <a href="{{URL::to('admin/editprofil')}}/{{Auth::user()->usr_id}}" class="btn btn-primary btn-block"><b>Edit</b></a>
+                <a href="{{URL::to('student/editprofil')}}/{{Auth::user()->usr_id}}" class="btn btn-primary btn-block"><b>Edit</b></a>
               </div>
               <!-- /.card-body -->
             </div>

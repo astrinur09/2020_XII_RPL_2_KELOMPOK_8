@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Student;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class RegisterController extends Controller
@@ -26,7 +29,59 @@ class RegisterController extends Controller
     */
     public function registerStudent()
     {
-        return view('admin.register');
+        return view('auth.register-student');
+    }
+
+    public function registerSaveStudent(Request $request)
+    {
+        $nama = $_POST['usr_name'];
+        if ($nama)
+        {
+            $email = $_POST['usr_email'];
+            if ($email)
+            {
+                $password = $_POST['usr_password'];
+                $rePassword = $_POST['password_confirmation'];
+                if ($rePassword == $password)
+                {
+                   
+                    $user = new User();
+                    $user ->role_id                 = '2';
+                    $user ->usr_name                = $nama;
+                    $user ->usr_email               = $email;
+                    
+                    $user ->usr_password            = Hash::make($password);
+                    //$user->usr_profile_picture    = $picture;
+                    $user->usr_verification_token   = str_replace('/','', Hash::make(str::random(12)));
+                    $user->usr_is_active            = true;
+                    $user->usr_email_verified_at    = now(); 
+                    //dd($user);
+                    $user->save();
+
+        if ($user->role_id == 2) {
+            $user->assignRole('student');
+            $user->created_by = $user->usr_id;
+    }
+
+
+                     $student = new Student();
+                     $student->std_usr_id    = $user->usr_id;
+                     $student->nis           = $request->nis;
+                     $student->class         = $request->class;
+                     $student->gender        = $request->gender;
+                     $student->status        = '0';
+
+           // dd($user);
+       
+
+                     $student->save();                
+                    return redirect('/');
+                    // mail::to($data['usr_email'])->send(new SendMail($user));
+                    // return $user;
+
+                }
+            }
+        }
     }
 
     public function registerTeacher()
@@ -69,8 +124,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'usr_name' => ['required', 'string', 'max:255'],
             'usr_email' => ['required', 'string', 'max:255', 'unique:users,usr_email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'usr_phone' => ['required', 'min:11', 'max:14'],
+            'password' => ['required', 'string', 'min:3', 'confirmed'],
+            'usr_phone' => ['required', 'min:5', 'max:14'],
         ]);
     }
 
@@ -85,7 +140,7 @@ class RegisterController extends Controller
         $user = User::create([
             'usr_name' => $data['usr_name'],
             'usr_email' => $data['usr_email'],
-            'usr_phone' => $data['usr_phone'],
+           // 'usr_phone' => $data['usr_phone'],
             'usr_password' => Hash::make($data['password']),
             'usr_verification_token' => str_replace('/', '', Hash::make(Str::random(12))),
             'usr_is_active' => true,

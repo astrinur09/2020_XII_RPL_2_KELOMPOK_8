@@ -2,11 +2,11 @@
 <html>
 
 <head>
-	@include ('admin.head')
+	@include ('student.head')
 </head>
 <body>
-	@include ('admin.header')
-	@include ('admin.sidebar')
+	@include ('student.header')
+	@include ('student.sidebar')
 	
       <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -18,6 +18,6 @@
 
 	
 </body>
-	@include ('admin.js')
+	@include ('student.js')
 </html>
 @include('sweetalert::alert')
